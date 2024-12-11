@@ -1,58 +1,94 @@
+# AWS - Serverless CRUD Task
 
-# Welcome to your CDK Python project!
+![Architecture Diagram](./images/Diagram.png)
 
-This is a blank project for CDK development with Python.
+This README will provide an overview of the system architecture. It will breifly describe each component.
 
-The `cdk.json` file tells the CDK Toolkit how to execute your app.
+- [Components](#components)
+  - [API Gateway](#api-gateway)
+  - [Lambda functions](#lambda-functions)
+  - [Dynamo DB Table](#dynamo-db-table)
+- [Setup](#setup)
+- [Usage](#usage)
+- [Testing](#testing)
 
-This project is set up like a standard Python project.  The initialization
-process also creates a virtualenv within this project, stored under the `.venv`
-directory.  To create the virtualenv it assumes that there is a `python3`
-(or `python` for Windows) executable in your path with access to the `venv`
-package. If for any reason the automatic creation of the virtualenv fails,
-you can create the virtualenv manually.
+## Components
 
-To manually create a virtualenv on MacOS and Linux:
+### API Gateway
 
-```
-$ python -m venv .venv
-```
+Amazon API Gateway is used to create the API that the clients interacts with. It serves as the entry point for the application.
 
-After the init process completes and the virtualenv is created, you can use the following
-step to activate your virtualenv.
+### Lambda Functions
 
-```
-$ source .venv/bin/activate
-```
+We have four lambda functions, one for each CRUD operations, create task, get task, update task, and delete task. The API gateway resource have a permission to invoke them, as well as each function having the required permissions that it needs to interact with the dynamodb table using IAM roles and policies.
 
-If you are a Windows platform, you would activate the virtualenv like this:
+### Dynamo DB Table
 
-```
-% .venv\Scripts\activate.bat
-```
+This is where the tasks will be stored, currently it uses 'on-demand' capacity mode, later if we found that our requests are predictable we can change it to the provisioned capacity mode, as it will be more cost-effective.
 
-Once the virtualenv is activated, you can install the required dependencies.
+## Setup
 
-```
-$ pip install -r requirements.txt
-```
+AWS CDK used to provision the components of the system, in order to re-produce the setup, make sure you have python and the cdk cli installed and follow those instructions
 
-At this point you can now synthesize the CloudFormation template for this code.
+### clone the repo
 
-```
-$ cdk synth
+```bash
+git clone https://github.com/mohamedhafizelhaj/AWS-Serverless-CRUD-Task
 ```
 
-To add additional dependencies, for example other CDK libraries, just add
-them to your `setup.py` file and rerun the `pip install -r requirements.txt`
-command.
+### create an isolated virual environment
 
-## Useful commands
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+```
 
- * `cdk ls`          list all stacks in the app
- * `cdk synth`       emits the synthesized CloudFormation template
- * `cdk deploy`      deploy this stack to your default AWS account/region
- * `cdk diff`        compare deployed stack with current state
- * `cdk docs`        open CDK documentation
+### install the requirements
 
-Enjoy!
+```bash
+pip install -r requirements.txt
+```
+
+### synthesize your cdk template
+
+```bash
+cdk synzth
+```
+
+### bootstrap the environment in your account
+
+```bash
+cdk bootstrap aws://{account_id}/{region}
+```
+
+### deploy the stack
+
+```bash
+cdk deploy
+```
+
+## Usage
+
+### Create a task
+
+![Create task](./images/Create.png)
+
+### Get a task
+
+![Get task](./images/Read.png)
+
+### Update a task
+
+![Update task](./images/Update.png)
+
+### Delete a task
+
+![Update task](./images/Delete.png)
+
+## Testing
+
+Note that currently I am hardcoding the logical resource names in the infrastructure test file for simplicity, if you would like to run the tests, you should replace them with your resource names found in the synthesized cloudformation template, after that run
+
+```bash
+pytest tests/unit
+```
