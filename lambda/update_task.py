@@ -15,17 +15,17 @@ def handler(event, context):
         if 'title' in body:
             update_expression += "#title = :new_title"
             expression_names['#title'] = "title"
-            expression_values[':new_title'] = body('title')
+            expression_values[':new_title'] = body['title']
 
         if 'description' in body:
-            update_expression += "#description = :new_description"
+            update_expression += ", #description = :new_description"
             expression_names['#description'] = "description"
-            expression_values[':new_description'] = body('description')
+            expression_values[':new_description'] = body['description']
 
         if 'status' in body:
-            update_expression += "#s = :new_status"
+            update_expression += ", #s = :new_status"
             expression_names['#s'] = "status"
-            expression_values[':new_status'] = body('status')
+            expression_values[':new_status'] = body['status']
 
         response = table.update_item(
             Key=key, UpdateExpression=update_expression,
