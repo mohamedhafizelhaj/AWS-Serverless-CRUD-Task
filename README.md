@@ -4,6 +4,8 @@
 
 This README will provide an overview of the system architecture. It will breifly describe each component.
 
+Note: I have used a service that can help locally developing and testing AWS projects.
+
 - [Components](#components)
   - [API Gateway](#api-gateway)
   - [Lambda functions](#lambda-functions)
