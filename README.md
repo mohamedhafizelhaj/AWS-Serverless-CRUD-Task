@@ -33,7 +33,7 @@ AWS CDK used to provision the components of the system, in order to re-produce t
 ### clone the repo
 
 ```bash
-git clone https://github.com/mohamedhafizelhaj/AWS-Serverless-CRUD-Task
+git clone https://github.com/mohamedhafizelhaj/AWS-Serverless-CRUD-Task.git
 ```
 
 ### create an isolated virual environment
