@@ -8,7 +8,7 @@ def handler(event, context):
         key = {"taskId": str(taskId)}
         table.delete_item(Key=key)
 
-        return create_response(204, [])
+        return create_response(204)
     
     except Exception as e:
         message = {'error': 'Server Error', 'details': str(e)}

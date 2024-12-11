@@ -5,12 +5,16 @@ import uuid
 dynamodb = boto3.resource('dynamodb')
 table = dynamodb.Table("TasksTable")
 
-def create_response(status_code, body):
+def create_response(status_code, body=None):
 
-    return {
-        'status_code': status_code,
-        'body': json.dumps(body),
+    response = {
+        'statusCode': status_code,
         'headers': {
             'Content-Type': 'application/json'
         }
     }
+
+    if body:
+        response['body'] = json.dumps(body)
+        
+    return response
